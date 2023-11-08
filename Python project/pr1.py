@@ -3,8 +3,11 @@ import platform
 import mysql.connector
 import pandas as pd
 
+
 mydb = mysql.connector.connect(host='localhost', user='root',passwd='',database='fee_management')
 mycursor=mydb.cursor()
+
+
 
 def stuInsert():
     L=[]
@@ -93,8 +96,32 @@ def removeStu():
     mycursor.execute(sql,rl)
     mydb.commit()
     
+def authenticate_user():
+    users = {
+        'prem': 'prem@1604',
+        'raja': 'raja@004',
+        'mani': 'mani@122'
+        
+    }
+    
+    username = input("Enter your username: ")
+    password = input("Enter your password: ")
+    
+    if username in users and users[username] == password:
+        print("Login successful!")
+        return True
+    else:
+        print("Login failed. Invalid username or password.")
+        return False
 
-def MenuSet(): #Function For The Student Management System
+
+def MenuSet(): #Function For The Student Management System menu
+    authenticated = False
+    
+    while not authenticated:
+        authenticated = authenticate_user()
+        
+        
     print("Enter 1 : To Add Student")
     print("Enter 2 : To View Student ")
     print("Enter 3 : To Deposit Fee ")
@@ -102,34 +129,37 @@ def MenuSet(): #Function For The Student Management System
     print("Enter 5 : To View Fee of Any Student")
     
     try: #Using Exceptions For Validation
-        userInput = int(input("Please Select An Above Option: ")) #Will Take Input From User
+        userInput = int(input("Please Select An Above Option: "))
     except ValueError:
         exit("\nHy! That's Not A Number") #Error Message
     else:
-        print("\n") #Print New Line
+        print("\n")
         if(userInput == 1):
             stuInsert()
+            print("Student details added successfully..")
         elif (userInput==2):
             stuView()
         elif (userInput==3):
             feeDeposit()
+            print("Fee deposited successfully..")
         elif (userInput==4):
             removeStu()
+            print("Student details removed successfully..")
         elif (userInput==5):
             feeView()
         else:
-            print("Enter correct choice. . .  ")       
+            print("Enter correct choice. . .  ")    
+            
         
 MenuSet()
 def runAgain():
-    runAgn = input("\nwant To Run Again Y/n: ")
+    runAgn = input("\nwant To Run Again y/n: ")
     while(runAgn.lower() == 'y'):
         if(platform.system() == "Windows"):
             print(os.system('cls'))
         else:
             print(os.system('clear'))
         MenuSet()
-        runAgn = input("\nwant To Run Again Y/n: ")
         
 runAgain()		
 
